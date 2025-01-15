@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import Card from "@/components/Card";
-import { Note } from "@prisma/client";
+import { PrismaClient, Note } from "@prisma/client"; // Use PrismaClient and Note type
 
 const Notepage = ({ searchValue }: { searchValue: string }) => {
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<Note[]>([]); // Set the state type to Note[]
 
   const fetchData = async () => {
     try {
@@ -13,7 +13,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
-      const data = await response.json();
+      const data: Note[] = await response.json(); // Ensure the data is typed as Note[]
       setNotes(data);
     } catch (error: any) {
       console.log(error);
@@ -27,7 +27,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
-      const data = await response.json();
+      const data: Note[] = await response.json(); // Ensure the data is typed as Note[]
       setNotes(data);
     } catch (error: any) {
       console.log(error);
@@ -57,7 +57,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
 
   return (
     <span className="flex flex-wrap items-stretch">
-      {notes.map((note: Note) => (
+      {notes.map((note) => (
         <Card key={note.id} {...note} fetchData={fetchData} />
       ))}
     </span>
