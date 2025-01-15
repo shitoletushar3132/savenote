@@ -14,6 +14,7 @@ export const addNote = async (note: {
     console.log("Note added successfully:", response.data);
     return response.data;
   } catch (error: unknown) {
+    console.log(error);
     if (error instanceof Error) {
       console.log(error.message);
       throw new Error(error.message);

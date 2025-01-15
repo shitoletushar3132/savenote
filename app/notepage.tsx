@@ -15,6 +15,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
+      console.log(response);
       const data = await response.json();
       setNotes(data);
     } catch (error: any) {
@@ -28,6 +29,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
+      console.log(response);
       const data = await response.json();
       setNotes(data);
     } catch (error: any) {
@@ -57,7 +59,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
 
   return (
     <span className="flex flex-wrap items-stretch">
-      {notes.map((note) => (
+      {notes?.map((note) => (
         <Card key={note.id} {...note} fetchData={fetchData} />
       ))}
     </span>
