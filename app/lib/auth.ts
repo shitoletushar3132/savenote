@@ -30,7 +30,7 @@ export const NEXT_AUTH = {
         },
         password: { label: "Password", type: "password" },
       },
-      //@ts-expect-error:helo
+      //@ts-ignore
       async authorize(credentials: Credentials) {
         try {
           // Find user by email
@@ -86,7 +86,7 @@ export const NEXT_AUTH = {
               data: {
                 name: profile.name || "",
                 email: profile.email || "",
-                //@ts-expect-error: no picture
+                // @ts-ignore
                 image: profile.picture,
                 provider: account.provider,
               },
@@ -97,7 +97,7 @@ export const NEXT_AUTH = {
               where: { email: profile.email },
               data: {
                 name: profile.name,
-                //@ts-expect-error: no picture
+                // @ts-ignore
                 image: profile.picture,
               },
             });

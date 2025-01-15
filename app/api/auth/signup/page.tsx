@@ -39,7 +39,7 @@ const Page = () => {
     try {
       const res = await signUp(userData);
 
-      //@ts-expect-error: Ignoring
+      //@ts-ignore
       if (res.userId) {
         const signInResult = await signIn("credentials", {
           email: userData.email,
