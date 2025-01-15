@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Note" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "color" SET DEFAULT '#C0C0C0';
