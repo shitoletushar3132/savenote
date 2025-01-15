@@ -2,10 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import Card from "@/components/Card";
-import { PrismaClient, Note } from "@prisma/client"; // Use PrismaClient and Note type
+import { PrismaClient } from "@prisma/client"; // Only import PrismaClient
+
+const prisma = new PrismaClient(); // Create an instance of PrismaClient
 
 const Notepage = ({ searchValue }: { searchValue: string }) => {
-  const [notes, setNotes] = useState<Note[]>([]); // Set the state type to Note[]
+  const [notes, setNotes] = useState<any[]>([]); // State type is inferred as an array of notes
 
   const fetchData = async () => {
     try {
@@ -13,7 +15,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
-      const data: Note[] = await response.json(); // Ensure the data is typed as Note[]
+      const data = await response.json();
       setNotes(data);
     } catch (error: any) {
       console.log(error);
@@ -27,7 +29,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
-      const data: Note[] = await response.json(); // Ensure the data is typed as Note[]
+      const data = await response.json();
       setNotes(data);
     } catch (error: any) {
       console.log(error);
