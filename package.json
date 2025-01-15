@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --schema=./db/prisma/schema.prisma"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.3.1",
