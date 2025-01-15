@@ -19,7 +19,6 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
       setNotes(data);
     } catch (error: any) {
       console.log(error);
-      alert(error.message);
     }
   };
 
@@ -34,7 +33,6 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
     } catch (error: any) {
       console.log(error);
       console.error(error);
-      alert(error.message);
     }
   };
 

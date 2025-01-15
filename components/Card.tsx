@@ -79,7 +79,6 @@ const Card = ({ fetchData, ...note }: CardProps) => {
       fetchData();
     } catch (error: any) {
       console.error("Error updating note:", error);
-      alert(error.message);
     }
   };
 
