@@ -1,9 +1,18 @@
 "use client";
 
-import { Note } from "@prisma/client";
 import React, { useState } from "react";
 import { Palette } from "lucide-react";
 import axios from "axios";
+
+// You can define a type that mimics your Note model structure
+interface Note {
+  id: number;
+  title: string;
+  description: string;
+  color: string;
+  updatedAt: Date;
+}
+
 interface CardProps extends Note {
   fetchData: () => void;
 }
@@ -17,18 +26,18 @@ const Card = ({ fetchData, ...note }: CardProps) => {
   const [showColorPicker, setShowColorPicker] = useState(false);
 
   const colors = [
-    "#ffffff", // White
-    "#f28b82", // Red
-    "#fbbc04", // Orange
-    "#fff475", // Yellow
-    "#ccff90", // Green
-    "#a7ffeb", // Teal
-    "#cbf0f8", // Blue
-    "#aecbfa", // Dark blue
-    "#d7aefb", // Purple
-    "#fdcfe8", // Pink
-    "#e6c9a8", // Brown
-    "#e8eaed", // Gray
+    "#ffffff",
+    "#f28b82",
+    "#fbbc04",
+    "#fff475",
+    "#ccff90",
+    "#a7ffeb",
+    "#cbf0f8",
+    "#aecbfa",
+    "#d7aefb",
+    "#fdcfe8",
+    "#e6c9a8",
+    "#e8eaed",
   ];
 
   const formatDate = (date: Date) => {
@@ -42,10 +51,10 @@ const Card = ({ fetchData, ...note }: CardProps) => {
   };
 
   const handleSave = async ({ id }: { id: Note["id"] }) => {
-    console.log(id); // Logs the id to verify it's being received
+    console.log(id);
     try {
       const response = await axios.patch(`/api/notes`, {
-        id, // Pass the id of the note being updated
+        id,
         title,
         description,
         color,
@@ -66,9 +75,7 @@ const Card = ({ fetchData, ...note }: CardProps) => {
 
   const handleDelete = async ({ id }: { id: Note["id"] }) => {
     try {
-      await axios.delete("/api/notes", {
-        data: { id },
-      });
+      await axios.delete("/api/notes", { data: { id } });
       fetchData();
     } catch (error: any) {
       console.error("Error updating note:", error);
@@ -84,16 +91,7 @@ const Card = ({ fetchData, ...note }: CardProps) => {
           setShow(true);
         }}
         style={{ backgroundColor: color }}
-        className={`
-          transition-all duration-200 ease-in-out
-          border border-border/40 hover:border-border/80
-          rounded-lg p-4 
-          shadow-sm hover:shadow-md
-          cursor-pointer
-          w-full md:w-72
-          relative
-          m-4
-        `}
+        className="transition-all duration-200 ease-in-out border border-border/40 hover:border-border/80 rounded-lg p-4 shadow-sm hover:shadow-md cursor-pointer w-full md:w-72 relative m-4"
       >
         <div className="font-medium text-lg text-foreground/90">
           <h3 className="line-clamp-2">{note.title}</h3>
