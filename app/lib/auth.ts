@@ -84,7 +84,8 @@ export const NEXT_AUTH = {
             // Create a new user if not found
             user = await prisma.user.create({
               data: {
-                name: profile.name || "",
+                //@ts-ignore
+                name:profile.name.replace(/[^a-zA-Z0-9]/g, "").toLowerCase() || "",
                 email: profile.email || "",
                 // @ts-ignore
                 image: profile.picture,
@@ -96,7 +97,8 @@ export const NEXT_AUTH = {
             user = await prisma.user.update({
               where: { email: profile.email },
               data: {
-                name: profile.name,
+                 //@ts-ignore
+                  name:profile.name.replace(/[^a-zA-Z0-9]/g, "").toLowerCase() || "",
                 // @ts-ignore
                 image: profile.picture,
               },
