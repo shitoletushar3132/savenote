@@ -58,8 +58,8 @@ export const NEXT_AUTH = {
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID || "",
-      clientSecret: process.env.GOOGLE_SECRET || "",
+      clientId: process.env.GOOGLE_ID || "129373152566-qi2gipuvlsng4thnvkbalpmsbcak1hm5.apps.googleusercontent.com",
+      clientSecret: process.env.GOOGLE_SECRET || "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",
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET || "tushar",
