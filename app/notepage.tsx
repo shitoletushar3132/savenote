@@ -57,6 +57,15 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
     }
   }, [searchValue]);
 
+
+  if(notes.length === 0 ){
+    return (
+    <span className="flex flex-wrap items-stretch">
+      <h1 className="font-bold text-lg">Add Notes...</h1>
+    </span>
+    )
+  }
+
   return (
     <span className="flex flex-wrap items-stretch">
       {notes?.map((note) => (
