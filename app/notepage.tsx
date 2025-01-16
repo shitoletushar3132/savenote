@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Card from "@/components/Card";
 
 const Notepage = ({ searchValue }: { searchValue: string }) => {
   const [notes, setNotes] = useState<any[]>([]); // State for storing notes
   const [loading, setLoading] = useState<boolean>(true); // State for loading
   const [error, setError] = useState<string | null>(null); // State for error messages
-
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -52,16 +52,23 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
   }, []);
 
   useEffect(() => {
-    // Fetch search data when searchValue changes
-    const fetch = async () => {
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current); // Clear the previous timeout
+    }
+
+    debounceTimeout.current = setTimeout(async () => {
       if (searchValue.trim()) {
         await fetchSearchData();
       } else {
         await fetchData();
       }
-    };
+    }, 500); // Adjust debounce delay (500ms)
 
-    fetch();
+    return () => {
+      if (debounceTimeout.current) {
+        clearTimeout(debounceTimeout.current); // Cleanup on unmount
+      }
+    };
   }, [searchValue]);
 
   if (loading) {

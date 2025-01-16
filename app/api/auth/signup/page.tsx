@@ -39,8 +39,10 @@ const Page = () => {
     try {
       const res = await signUp(userData);
 
+      console.log(res);
+
       //@ts-ignore
-      if (res.userId) {
+      if (res.id) {
         const signInResult = await signIn("credentials", {
           email: userData.email,
           password: userData.password,

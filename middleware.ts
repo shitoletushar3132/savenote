@@ -3,23 +3,26 @@ import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
   const sessionToken = req.cookies.get("next-auth.session-token");
-
   const { pathname } = req.nextUrl;
 
-  // Exclude the sign-in page and static files from the middleware
-  if (
-    pathname.startsWith("/api/auth/signin") || // Exclude sign-in page
-    pathname.startsWith("/_next") || // Exclude Next.js internal files
-    pathname.startsWith("/static") || // Exclude static files
-    pathname === "/favicon.ico" // Exclude favicon
-  ) {
+  // List of paths to exclude from authentication
+  const excludedPaths = [
+    "/api/auth", // Allow any route under /api/auth to bypass the middleware
+    "/favicon.ico",
+    "/logo.png",
+    "/_next",
+    "/static",
+  ];
+
+  // Check if the path starts with any excluded path
+  if (excludedPaths.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
   }
 
+  // Redirect to sign-in if session token is missing
   if (!sessionToken) {
     console.log("No session token found. Redirecting to sign-in page.");
-    const signInUrl = new URL("/api/auth/signin", req.url); // Ensure proper URL resolution
-    return NextResponse.redirect(signInUrl);
+    return NextResponse.redirect(new URL("/api/auth/signin", req.url));
   }
 
   return NextResponse.next();
