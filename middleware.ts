@@ -8,6 +8,7 @@ export function middleware(req: NextRequest) {
 
   // Exclude the sign-in page and static files from the middleware
   if (
+    pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/auth/signin") || // Exclude sign-in page
     pathname.startsWith("/_next") || // Exclude Next.js internal files
     pathname.startsWith("/static") || // Exclude static files
