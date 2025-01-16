@@ -2,74 +2,86 @@
 
 import React, { useEffect, useState } from "react";
 import Card from "@/components/Card";
-import { PrismaClient } from "@prisma/client"; // Only import PrismaClient
-
-const prisma = new PrismaClient(); // Create an instance of PrismaClient
 
 const Notepage = ({ searchValue }: { searchValue: string }) => {
-  const [notes, setNotes] = useState<any[]>([]); // State type is inferred as an array of notes
+  const [notes, setNotes] = useState<any[]>([]); // State for storing notes
+  const [loading, setLoading] = useState<boolean>(true); // State for loading
+  const [error, setError] = useState<string | null>(null); // State for error messages
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/notes");
       if (!response.ok) {
         throw new Error("Failed to fetch notes");
       }
-      console.log(response);
       const data = await response.json();
       setNotes(data);
     } catch (error: any) {
-      console.log(error);
+      console.error("Error fetching notes:", error);
+      setError("Failed to fetch notes");
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchSearchData = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`/api/notes/search?query=${searchValue}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch notes");
+        const data = await response.json();
+        console.log("before", data);
+        throw new Error("Failed to fetch search results");
       }
-      console.log(response);
+
       const data = await response.json();
+      console.log("after", data);
       setNotes(data);
     } catch (error: any) {
-      console.log(error);
-      console.error(error);
+      console.log("Error fetching search results:", error);
+      setError("Failed to fetch search results hi" + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    const interval = setInterval(fetchData, 3000);
-
-    // Fetch data immediately on mount
+    // Fetch data when the component mounts
     fetchData();
-
-    // Cleanup function to clear the interval
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     // Fetch search data when searchValue changes
-    if (searchValue.trim()) {
-      fetchSearchData();
-    } else {
-      fetchData();
-    }
+    const fetch = async () => {
+      if (searchValue.trim()) {
+        await fetchSearchData();
+      } else {
+        await fetchData();
+      }
+    };
+
+    fetch();
   }, [searchValue]);
 
+  if (loading) {
+    return <h1 className="font-bold text-lg text-center">Loading...</h1>;
+  }
 
-  if(notes.length === 0 ){
+  if (error) {
     return (
-    <span className="flex flex-wrap items-stretch">
-      <h1 className="font-bold text-lg">Add Notes...</h1>
-    </span>
-    )
+      <h1 className="font-bold text-lg text-red-500 text-center">{error}</h1>
+    );
+  }
+
+  if (!Array.isArray(notes) || notes.length === 0) {
+    return <h1 className="font-bold text-lg text-center">Add Notes...</h1>;
   }
 
   return (
     <span className="flex flex-wrap items-stretch">
       {notes?.map((note) => (
-        <Card key={note.id} {...note} fetchData={fetchData} />
+        <Card key={note?.id} {...note} fetchData={fetchData} />
       ))}
     </span>
   );

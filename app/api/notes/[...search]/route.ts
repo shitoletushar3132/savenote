@@ -13,14 +13,7 @@ export async function GET(req: NextRequest) {
   }
 
   const url = new URL(req.url);
-  const searchQuery = url.searchParams.get("query")?.trim(); // Trimming any extra spaces
-
-  if (!searchQuery) {
-    return NextResponse.json(
-      { error: "Search query cannot be empty" },
-      { status: 400 }
-    );
-  }
+  const searchQuery = url.searchParams.get("query")?.trim();
 
   try {
     const searchResults = await prisma.note.findMany({
@@ -35,19 +28,16 @@ export async function GET(req: NextRequest) {
     });
 
     if (searchResults.length === 0) {
-      return NextResponse.json({ message: "No notes found" }, { status: 200 });
+      console.log("blank", searchResults);
+      return NextResponse.json(searchResults, { status: 200 });
     }
 
     return NextResponse.json(searchResults, { status: 200 });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return NextResponse.json(
-        { error: "Failed to search notes" },
-        { status: 500 }
-      );
-    } else {
-      console.log("Unknown error", error);
-      throw new Error("An unknown error occurred");
-    }
+    console.error("Error searching notes:", error);
+    return NextResponse.json(
+      { error: "An error occurred while searching notes" },
+      { status: 500 }
+    );
   }
 }
