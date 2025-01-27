@@ -58,8 +58,8 @@ export const NEXT_AUTH = {
       },
     }),
     GoogleProvider({
-  clientId:"129373152566-bt7t1kh9f32fasqk8t9bp172j2dog7ak.apps.googleusercontent.com",
-  clientSecret: "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",
+  clientId:"129373152566-qi2gipuvlsng4thnvkbalpmsbcak1hm5.apps.googleusercontent.com",
+  clientSecret: "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",
   authorization: {
     params: {
       scope: "profile email",
