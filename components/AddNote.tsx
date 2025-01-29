@@ -4,13 +4,18 @@ import { addNote } from "@/app/lib/note";
 import React, { useState, useRef, useEffect } from "react";
 import { Palette, Plus } from "lucide-react";
 import { cn } from "@/app/lib/utils";
+
 interface Note {
   title: string;
   description: string;
   color: string;
 }
 
-const AddNote = () => {
+interface RefereshData {
+  refreshData: any;
+}
+
+const AddNote = ({ refreshData }: RefereshData) => {
   const [note, setNote] = useState<Note>({
     title: "",
     description: "",
@@ -80,6 +85,7 @@ const AddNote = () => {
     console.log("handle");
     if (note.title.trim() || note.description.trim()) {
       await addNote(note);
+      refreshData((prev: boolean) => !prev);
     }
   };
 

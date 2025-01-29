@@ -3,11 +3,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import Card from "@/components/Card";
 
-const Notepage = ({ searchValue }: { searchValue: string }) => {
+const Notepage = ({
+  searchValue,
+  refresh,
+}: {
+  searchValue: string;
+  refresh: boolean;
+}) => {
   const [notes, setNotes] = useState<any[]>([]); // State for storing notes
   const [loading, setLoading] = useState<boolean>(true); // State for loading
   const [error, setError] = useState<string | null>(null); // State for error messages
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -49,7 +56,7 @@ const Notepage = ({ searchValue }: { searchValue: string }) => {
   useEffect(() => {
     // Fetch data when the component mounts
     fetchData();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (debounceTimeout.current) {
